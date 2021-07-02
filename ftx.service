@@ -1,0 +1,12 @@
+[Unit]
+Description=FTX-BOT
+After=network.target
+
+[Service]
+Restart=always
+WorkingDirectory=/home/ec2-user/ftx-bot/
+ExecStart=/home/ec2-user/ftx-bot/execute.sh
+User=ec2-user
+
+[Install]
+WantedBy=default.target
