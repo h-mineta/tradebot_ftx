@@ -1,1 +1,1 @@
-# tradebot_ftx
+# Trading bot FTX
