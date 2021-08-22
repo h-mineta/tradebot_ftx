@@ -213,13 +213,13 @@ async def trade_client(args: dict) -> None:
     timezone_local: str = timezone(args.timezone)
 
     while True:
-        await get_balances(retry_wait=10)
-
-        await get_open_orders(args.market, retry_wait=10)
-
-        await get_open_trigger_orders(args.market, retry_wait=10)
-
         try:
+            await get_balances(retry_wait=10)
+
+            await get_open_orders(args.market, retry_wait=10)
+
+            await get_open_trigger_orders(args.market, retry_wait=10)
+
             async with websockets.connect(args.ws_uri) as websocket:
                 await ws_auth(websocket, args.api_key, args.api_secret)
                 await ws_subscribe(websocket, ["ticker"], args.market)
@@ -236,7 +236,9 @@ async def trade_client(args: dict) -> None:
         except KeyboardInterrupt:
             break
         except Exception as ex:
-            raise
+            logger.error(ex)
+            await asyncio.sleep(60)
+            continue
 
 async def trade_logic(args: dict, timezone_local: str, payload: dict) -> None:
     global shared_params
